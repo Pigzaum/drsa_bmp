@@ -3,7 +3,7 @@
 A C implementation of the Dual Representation Simulated Annealing (DRSA) [1] for the bandwidth minimization problem.
 This implementation was made as close as possible to the algorithm description provided by [1].
 
-### Compile and Run instructions 
+### Compile and run instructions 
 
 * This code accept only adjacency matrices in the Matrix Market Format as input (in the "instances_hb" you can find an matrix example). See http://math.nist.gov/MatrixMarket for details.
 * Go to the drsa folder and to compile type: $ make
