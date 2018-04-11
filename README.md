@@ -5,7 +5,7 @@ This implementation was made as close as possible to the algorithm description p
 
 ## Compile and Run instructions 
 
-* This code accept only graphs in the Matrix Market Format as input. See http://math.nist.gov/MatrixMarket for details.
+* This code accept only adjacency matrices in the Matrix Market Format as input (in the "instances_hb" you can find an matrix example). See http://math.nist.gov/MatrixMarket for details.
 * Go to the drsa folder and to compile type: $ make
 * To run execute the exec_drsa file: $ ./exec_drsa
 
