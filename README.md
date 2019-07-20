@@ -13,7 +13,7 @@ This implementation was made as close as possible to the algorithm description p
 
 * GCC
 
-## Compile and Run instructions 
+### Compile and run instructions 
 
 Go to the drsa folder and to compile type:
 
@@ -29,6 +29,9 @@ $ ./exec_drsa -f <matrix file path>
 
 This code accept only graphs in the Matrix Market Format as input. See http://math.nist.gov/MatrixMarket for details.
 
+## License
+
+This project is licensed under the GNU General Public License - see the [LICENSE.md](LICENSE.md) file for details.
 
 ## References
 
