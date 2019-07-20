@@ -168,11 +168,13 @@ csr load_hb_matrix(const char* fname)
         int ret_code;
 
         if ((f = fopen(fname, "r")) == NULL)
+        {
                 exit(EXIT_FAILURE);
+        }
  
         if (mm_read_banner(f, &matcode) != 0)
         {
-                fprintf(stderr, "ERROR - could not process Matrix Market "
+                fprintf(stderr, "[ERROR] - could not process Matrix Market "
                         "banner");
                 printf(" in file [%s]\n", fname);
                 exit(EXIT_FAILURE);
@@ -242,8 +244,11 @@ csr load_hb_matrix(const char* fname)
         }
 
         // free memory
+        free(f);
         for (i = 0; i < n; ++i)
+        {
                 free(adj_matrix[i]);
+        }
         free(adj_matrix);
 
         return csr_m;
@@ -504,24 +509,66 @@ void drsa(const csr* m, const double t_0, const double alpha, const double l_f)
                         l *= gamma;
                 }
 
-                printf("t = %f, l = %f, beta = %f\n", t, l, f_w);
+                // printf("t = %f, l = %f, beta = %f\n", t, l, f_w);
         }
+        printf("Best solution cost (beta) = %f\n", f_w);
+}
+
+
+///////////////////////////////////////////////////
+/* checks if the input parameters are ok  */
+///////////////////////////////////////////////////
+int check_parameters(int argc, char **argv)
+{
+        if (argc != 3)
+        {
+                printf("[ERROR] Wrong number of parameters!\n");
+                return 0;
+        }
+
+        if (strcmp(argv[1], "-f"))
+        {
+                printf("[ERROR] Wrong flag!\n");
+                return 0;
+        }
+
+        FILE *f = NULL;
+        if ((f = fopen(argv[2], "r")) == NULL) // checks if the path is valid
+        {
+                printf("[ERROR] Matrix file does not exists!\n");
+                free(f);
+                return 0;
+        }
+
+        free(f);
+        return 1;
 }
 
 ///////////////////////////////////////////////////
 /* main routine */
 ///////////////////////////////////////////////////
-int main(void)
+int main(int argc, char **argv)
 {
-        csr m = load_hb_matrix("./instances_hb/can__144.mtx");
+        if (!check_parameters(argc, argv))
+        {
+                printf("See README.md file...\n");
+                return EXIT_FAILURE;
+        }
+
+        csr m = load_hb_matrix(argv[2]);
 
         printf ("Executing...\n");
         clock_t t = clock();
-        
-        drsa(&m, 1000, 0.99, 10 * n * m.row_ind_[n]);
+
+        // constants values following [1]
+        const double alpha = 0.99;
+        const double t_0 = 1000;
+        const double l_f = 10 * n * m.row_ind_[n];
+
+        drsa(&m, t_0, alpha, l_f);
         
         t = clock() - t;
-        printf ("It took me (%fs).\n", ((float)t)/CLOCKS_PER_SEC);
+        printf("It took me (%fs).\n", ((float)t)/CLOCKS_PER_SEC);
 
         return EXIT_SUCCESS;
 }
